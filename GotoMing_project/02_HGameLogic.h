@@ -1,9 +1,9 @@
 #pragma once
 
-const int MAP_WIDTH = 21;
-const int MAP_HEIGHT = 20;
+const int MAP_WIDTH = 75;
+const int MAP_HEIGHT = 35;
 
-const int SHADOW = 1;
+const int SHADOW = 3;
 
 //구조체
 typedef struct _tagpos
@@ -29,7 +29,7 @@ typedef struct _targetplayer {
 }PLAYER, *PPLAYER;
 
 enum class OBJ_TYPE {
-	ROAD = '0',
+	ROAD = '0', OBSTACLE, ENEMY,
 };
 
 //메서드 선언

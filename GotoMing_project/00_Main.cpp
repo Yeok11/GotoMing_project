@@ -5,6 +5,8 @@
 
 int main()
 {
+	HWND console = GetConsoleWindow();
+	ShowWindow(console, SW_MAXIMIZE);
 	int i = 0;
 	char arrMap[MAP_HEIGHT][MAP_WIDTH];
 
