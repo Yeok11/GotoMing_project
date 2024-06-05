@@ -1,0 +1,13 @@
+#include<Windows.h>
+
+#include"01_HConsole.cpp.h"
+
+void Gotoxy(int _x, int _y)
+{
+	// 콘솔창 핸들
+	HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+	// 커서 관련 구조체.
+	COORD Cur = { _x, _y }; // *2가 자연스러울수도있음.
+	// 콘솔 커서의 위치를 강제 이동시키는 함수.
+	SetConsoleCursorPosition(hOut, Cur);
+}
