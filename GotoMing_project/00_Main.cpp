@@ -12,6 +12,6 @@ int main()
 		Gotoxy(0, 0);
 		Render(MAP_HEIGHT, MAP_WIDTH);
 		FrameSync(60);
-		//²ÇÄ¿¹Ô °³²Ü ¤»d
+		//²ÇÄ¿¹Ô °³²Ü ¤»dk
 	}
 }
