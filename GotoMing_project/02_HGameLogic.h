@@ -26,6 +26,10 @@ typedef struct _targetplayer {
 
 }PLAYER, *PPLAYER;
 
+enum class OBJ_TYPE {
+	ROAD = '0',
+};
+
 //메서드 선언
 void FrameSync(unsigned int _Framerate);
 void Init(char _arrMap[MAP_HEIGHT][MAP_WIDTH]);

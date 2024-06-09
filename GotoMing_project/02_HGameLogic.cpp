@@ -23,10 +23,10 @@ void Init(char _arrMap[MAP_HEIGHT][MAP_WIDTH])
 {
 	SetCursorVis(false, 1);
 
-	std::fstream readMap("stage.txt");
+	std::fstream readMap("Map\\stage.txt");
 	if (readMap.is_open()) {
 		for (int i = 0; i < MAP_HEIGHT; ++i) {
-			readMap.getline(_arrMap[i], MAP_WIDTH);	
+			readMap.getline(_arrMap[i], MAP_WIDTH);
 			if (readMap.fail())
 				std::cout << "파일 에러";
 		}
@@ -37,8 +37,9 @@ void Render(char _arrMap[MAP_HEIGHT][MAP_WIDTH])
 {
 	for (int i = 0; i < MAP_HEIGHT; ++i) {
 		for (int j = 0; j < MAP_WIDTH; ++j) {
-			if (_arrMap[i][j] == 0) {
-				std::cout << "a ";
+			//std::cout << _arrMap[i][j];
+			if (_arrMap[i][j] == (char)OBJ_TYPE::ROAD) {
+				std::cout << "□";
 			}
 		}
 	    std::cout << std::endl;
