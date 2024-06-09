@@ -1,6 +1,6 @@
 #include<Windows.h>
 
-#include"01_HConsole.cpp.h"
+#include"01_HConsole.h"
 
 void Gotoxy(int _x, int _y)
 {
@@ -10,4 +10,13 @@ void Gotoxy(int _x, int _y)
 	COORD Cur = { _x, _y }; // *2가 자연스러울수도있음.
 	// 콘솔 커서의 위치를 강제 이동시키는 함수.
 	SetConsoleCursorPosition(hOut, Cur);
+}
+
+void SetCursorVis(bool _vis, DWORD _size)
+{
+	CONSOLE_CURSOR_INFO curinfo;
+	curinfo.bVisible = _vis; // on, off
+	curinfo.dwSize = _size; // 1~100
+	SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE)
+		, &curinfo);
 }

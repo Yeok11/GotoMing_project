@@ -1,6 +1,8 @@
 #include "02_HGameLogic.h"
+#include "01_HConsole.h"
 #include<iostream>
 #include<ctime>
+#include<fstream>
 
 void FrameSync(unsigned int _Framerate)
 {
@@ -17,12 +19,28 @@ void FrameSync(unsigned int _Framerate)
 	}
 }
 
-void Render(int Map_Height, int Map_Width)
+void Init(char _arrMap[MAP_HEIGHT][MAP_WIDTH])
 {
-	for (int i = 0; i < Map_Height; i++) {
-		for (int j = 0; j < Map_Width; j++) {
-			std::cout << "□";
+	SetCursorVis(false, 1);
+
+	std::fstream readMap("stage.txt");
+	if (readMap.is_open()) {
+		for (int i = 0; i < MAP_HEIGHT; ++i) {
+			readMap.getline(_arrMap[i], MAP_WIDTH);	
+			if (readMap.fail())
+				std::cout << "파일 에러";
 		}
-		std::cout << std::endl;
+	}
+}
+
+void Render(char _arrMap[MAP_HEIGHT][MAP_WIDTH])
+{
+	for (int i = 0; i < MAP_HEIGHT; ++i) {
+		for (int j = 0; j < MAP_WIDTH; ++j) {
+			if (_arrMap[i][j] == 0) {
+				std::cout << "a ";
+			}
+		}
+	    std::cout << std::endl;
 	}
 }
