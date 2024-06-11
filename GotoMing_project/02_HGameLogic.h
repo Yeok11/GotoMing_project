@@ -3,6 +3,8 @@
 const int MAP_WIDTH = 21;
 const int MAP_HEIGHT = 20;
 
+const int SHADOW = 1;
+
 //구조체
 typedef struct _tagpos
 {
@@ -31,6 +33,8 @@ enum class OBJ_TYPE {
 };
 
 //메서드 선언
+void MovePlayer(char _arrMap[MAP_HEIGHT][MAP_WIDTH], PPLAYER _pPlayer);
+void Update(char _arrMap[MAP_HEIGHT][MAP_WIDTH], PPLAYER _pPlayer);
 void FrameSync(unsigned int _Framerate);
 void Init(char _arrMap[MAP_HEIGHT][MAP_WIDTH]);
-void Render(char _arrMap[MAP_HEIGHT][MAP_WIDTH]);
+void Render(char _arrMap[MAP_HEIGHT][MAP_WIDTH], PPLAYER _pPlayer, int SHADOW);

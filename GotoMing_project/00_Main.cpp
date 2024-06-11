@@ -8,11 +8,14 @@ int main()
 	int i = 0;
 	char arrMap[MAP_HEIGHT][MAP_WIDTH];
 
+	PLAYER tPlayer = {};
+
 	while (true)
 	{
+		Update(arrMap, &tPlayer);
 		Init(arrMap);
 		Gotoxy(0, 0);
-		Render(arrMap);
+		Render(arrMap, &tPlayer, SHADOW);
 		FrameSync(60);
 	}
 }
