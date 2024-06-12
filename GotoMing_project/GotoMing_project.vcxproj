@@ -146,7 +146,7 @@
     <ClCompile Include="02_HGameLogic.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="01_HConsole.cpp.h" />
+    <ClInclude Include="01_HConsole.h" />
     <ClInclude Include="02_HGameLogic.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

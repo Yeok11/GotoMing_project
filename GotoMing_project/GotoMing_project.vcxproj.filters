@@ -32,7 +32,7 @@
     <ClInclude Include="02_HGameLogic.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="01_HConsole.cpp.h">
+    <ClInclude Include="01_HConsole.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
