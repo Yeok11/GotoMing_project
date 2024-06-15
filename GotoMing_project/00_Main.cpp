@@ -19,5 +19,6 @@ int main()
 		Gotoxy(0, 0);
 		Render(arrMap, &tPlayer, SHADOW);
 		FrameSync(60);
+		//d
 	}
 }
