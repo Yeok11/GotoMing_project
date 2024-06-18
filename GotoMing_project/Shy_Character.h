@@ -1,5 +1,5 @@
 #pragma once
-#include "Shy_System/Shy_Define.h"
+#include "Shy_Define.h"
 
 enum class CHARACTERTYPE 
 {

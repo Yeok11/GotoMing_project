@@ -21,13 +21,16 @@
     <ClCompile Include="Shy_Board.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="Shy_Render.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="Shy_Core.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="Shy_Console.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Shy_Render.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Shy_Character.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
@@ -35,13 +38,22 @@
     <ClInclude Include="Shy_Board.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="Shy_Console.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
     <ClInclude Include="Shy_Render.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Shy_Define.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="Shy_Core.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Shy_Console.h">
+    <ClInclude Include="Shy_Skill.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Shy_Character.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>

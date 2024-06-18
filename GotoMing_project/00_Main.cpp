@@ -1,10 +1,14 @@
-#include "Shy_System/Shy_Define.h"
-#include "Shy_System/Shy_Core.h"
+#include "Shy_Define.h"
+#include "Shy_Core.h"
 
 int main()
 {
-	//GM::GetInstance()->Run();
-	GET_SINGLE(GM)->Run();
+	if (GM::GetInstance()->Init())
+	{
+		GM::DestroyInst();
+		return 0;
+	}
 
-
+	GM::GetInstance()->Run();
+	GM::DestroyInst();
 }
