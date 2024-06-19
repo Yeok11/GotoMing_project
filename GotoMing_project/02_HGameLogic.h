@@ -1,7 +1,9 @@
 #pragma once
 
-const int MAP_WIDTH = 75;
-const int MAP_HEIGHT = 35;
+const int MAP_WIDTH = 50;
+const int MAP_HEIGHT = 30;
+
+const int Map_Emtpy = 5;
 
 const int SHADOW = 3;
 
@@ -29,12 +31,12 @@ typedef struct _targetplayer {
 }PLAYER, *PPLAYER;
 
 enum class OBJ_TYPE {
-	ROAD = '0', OBSTACLE, ENEMY,
+	ROAD = '0', OBSTACLE, ENEMY, EMPTY
 };
 
 //메서드 선언
 void MovePlayer(char _arrMap[MAP_HEIGHT][MAP_WIDTH], PPLAYER _pPlayer);
 void Update(char _arrMap[MAP_HEIGHT][MAP_WIDTH], PPLAYER _pPlayer);
 void FrameSync(unsigned int _Framerate);
-void Init(char _arrMap[MAP_HEIGHT][MAP_WIDTH]);
+void Init(char _arrMap[MAP_HEIGHT][MAP_WIDTH], PPLAYER _pPlayer);
 void Render(char _arrMap[MAP_HEIGHT][MAP_WIDTH], PPLAYER _pPlayer, int SHADOW);

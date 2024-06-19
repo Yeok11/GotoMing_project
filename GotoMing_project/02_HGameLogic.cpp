@@ -54,8 +54,11 @@ void FrameSync(unsigned int _Framerate)
     }
 }
 
-void Init(char _arrMap[MAP_HEIGHT][MAP_WIDTH])
+void Init(char _arrMap[MAP_HEIGHT][MAP_WIDTH], PPLAYER _pPlayer)
 {
+    _pPlayer->playerPos.x = 1;
+    _pPlayer->playerPos.y = 1;
+    system("title 21Bombman | mode con cols=160 lines=40");
     SetCursorVis(false, 1);
 
     std::fstream readMap("Map\\stage.txt");
@@ -78,7 +81,7 @@ void Render(char _arrMap[MAP_HEIGHT][MAP_WIDTH], PPLAYER _pPlayer, int SHADOW)
     for (int i = _pPlayer->playerPos.y - SHADOW; i <= _pPlayer->playerPos.y + SHADOW; ++i) {
         for (int j = _pPlayer->playerPos.x - SHADOW; j <= _pPlayer->playerPos.x + SHADOW; ++j) {
             if (i >= 0 && i < MAP_HEIGHT && j >= 0 && j < MAP_WIDTH) {
-                revealed[i][j] = true; 
+                revealed[i][j] = true;
             }
         }
     }
@@ -87,12 +90,15 @@ void Render(char _arrMap[MAP_HEIGHT][MAP_WIDTH], PPLAYER _pPlayer, int SHADOW)
     for (int i = 0; i < MAP_HEIGHT; ++i) {
         for (int j = 0; j < MAP_WIDTH - 1; ++j) {
 
-            //플레이어위치
+            // 플레이어 위치
             if (i == _pPlayer->playerPos.y && j == _pPlayer->playerPos.x) {
                 std::cout << "＆";
             }
-
-            //시야에 비춰지고있는 부분 출력
+            // 빈 공간은 시야와 상관없이 항상 출력
+            else if (_arrMap[i][j] == (char)OBJ_TYPE::EMPTY) {
+                std::cout << "■";
+            }
+            // 시야에 비춰지고 있는 부분 출력
             else if (i >= _pPlayer->playerPos.y - SHADOW && i <= _pPlayer->playerPos.y + SHADOW &&
                 j >= _pPlayer->playerPos.x - SHADOW && j <= _pPlayer->playerPos.x + SHADOW) {
                 if (_arrMap[i][j] == (char)OBJ_TYPE::ROAD) {
@@ -105,8 +111,7 @@ void Render(char _arrMap[MAP_HEIGHT][MAP_WIDTH], PPLAYER _pPlayer, int SHADOW)
                     std::cout << "※";
                 }
             }
-
-            //시야에 비춰진 영역 출력
+            // 시야에 비춰진 영역 출력
             else if (revealed[i][j]) {
                 if (_arrMap[i][j] == (char)OBJ_TYPE::ROAD) {
                     std::cout << "  ";
@@ -120,9 +125,12 @@ void Render(char _arrMap[MAP_HEIGHT][MAP_WIDTH], PPLAYER _pPlayer, int SHADOW)
             }
             // 맵의 다른 요소 출력 (아직 밝혀지지 않은 영역)
             else {
-                std::cout << "▒ "; // 어두운 영역은 장애물 기호로 표시
+                std::cout << "▒ ";
             }
         }
         std::cout << std::endl;
+        for (int i = 0; i < Map_Emtpy; ++i) {
+            std::cout << " ";
+        }
     }
 }
