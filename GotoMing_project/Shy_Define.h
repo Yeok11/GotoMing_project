@@ -10,9 +10,9 @@ using std::cin;
 using std::vector;
 using std::endl;
 
+#include "Shy_Console.h"
 #include "Shy_Skill.h"
 #include "Shy_Board.h"
-
 
 
 #define GET_SINGLE(c) c::GetInstance()
