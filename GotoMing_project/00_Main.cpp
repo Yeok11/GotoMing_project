@@ -7,15 +7,19 @@ int main()
 {
 	int i = 0;
 	char arrMap[MAP_HEIGHT][MAP_WIDTH];
+	char InfoarrMap[MAP_HEIGHT][IMAP_WIDTH];
 	PLAYER tPlayer = {};
+	SetGameState stateManager = {};
 
-	Init(arrMap, &tPlayer);
+	Init(arrMap, InfoarrMap, &tPlayer);
 
 	while (true)
 	{
-		Update(arrMap, &tPlayer);
+		Update(arrMap, &tPlayer, stateManager);
 		Gotoxy(Map_Emtpy, 5);
-		Render(arrMap, &tPlayer, SHADOW);
+		GameRender(arrMap, &tPlayer, SHADOW, stateManager);
+		Gotoxy(Map_Emtpy + 101, 5);
+		InfoRender(InfoarrMap, &tPlayer, SHADOW, stateManager);
 		FrameSync(60);
 		//d
 	}

@@ -5,37 +5,57 @@
 #include <ctime>
 #include <fstream>
 
-void MovePlayer(char _arrMap[MAP_HEIGHT][MAP_WIDTH], PPLAYER _pPlayer)
-{
+bool isInfo = false;
+bool wasTabPressed = false;
+
+void KeyManager(char _arrMap[MAP_HEIGHT][MAP_WIDTH], PPLAYER _pPlayer, SetGameState& stateManager) {
+
     _pPlayer->playerNewPos = _pPlayer->playerPos;
+    
+    if (stateManager.State == GAMESTATE::PLAY) {
 
-    if (GetAsyncKeyState(VK_UP) & 0x8000)
-        --_pPlayer->playerNewPos.y;
-    if (GetAsyncKeyState(VK_DOWN) & 0x8000)
-        ++_pPlayer->playerNewPos.y;
-    if (GetAsyncKeyState(VK_LEFT) & 0x8000)
-        --_pPlayer->playerNewPos.x;
-    if (GetAsyncKeyState(VK_RIGHT) & 0x8000)
-        ++_pPlayer->playerNewPos.x;
+        if (GetAsyncKeyState(VK_UP) & 0x8000)
+            --_pPlayer->playerNewPos.y;
+        if (GetAsyncKeyState(VK_DOWN) & 0x8000)
+            ++_pPlayer->playerNewPos.y;
+        if (GetAsyncKeyState(VK_LEFT) & 0x8000)
+            --_pPlayer->playerNewPos.x;
+        if (GetAsyncKeyState(VK_RIGHT) & 0x8000)
+            ++_pPlayer->playerNewPos.x;
 
-    if (_arrMap[_pPlayer->playerNewPos.y][_pPlayer->playerNewPos.x] == (char)OBJ_TYPE::ROAD) {
-
-        _pPlayer->playerPos = _pPlayer->playerNewPos;
+        if (_arrMap[_pPlayer->playerNewPos.y][_pPlayer->playerNewPos.x] == (char)OBJ_TYPE::ROAD) {
+            _pPlayer->playerPos = _pPlayer->playerNewPos;
+        }
+        else if (_arrMap[_pPlayer->playerNewPos.y][_pPlayer->playerNewPos.x] == (char)OBJ_TYPE::ENEMY) {
+            system("curl parrot.live");
+        }
 
     }
-    else if (_arrMap[_pPlayer->playerNewPos.y][_pPlayer->playerNewPos.x] == (char)OBJ_TYPE::ENEMY) {
-        
-        //뒤지는 시스템 구현하세요 ㅇㅇ
-        system("curl parrot.live");
 
-    }
-    _pPlayer->playerNewPos.x = std::clamp(_pPlayer->playerNewPos.x, 0, MAP_WIDTH - 2);
+    _pPlayer->playerNewPos.x = std::clamp(_pPlayer->playerNewPos.x, 0, MAP_WIDTH - 1);
     _pPlayer->playerNewPos.y = std::clamp(_pPlayer->playerNewPos.y, 0, MAP_HEIGHT - 1);
+
+    if (GetAsyncKeyState(VK_TAB) & 0x8000) { // TAB 키가 눌린 상태
+        if (!wasTabPressed) { // 이전 프레임에서 TAB 키가 눌리지 않았을 때만 처리
+            if (!isInfo) {
+                stateManager.setState(GAMESTATE::INFO);
+                isInfo = true;
+            }
+            else {
+                stateManager.setState(GAMESTATE::PLAY);
+                isInfo = false;
+            }
+            wasTabPressed = true; // TAB 키가 눌렸음을 기록
+        }
+    }
+    else {
+        wasTabPressed = false; // TAB 키가 눌리지 않았음을 기록
+    }
 }
 
-void Update(char _arrMap[MAP_HEIGHT][MAP_WIDTH], PPLAYER _pPlayer)
+void Update(char _arrMap[MAP_HEIGHT][MAP_WIDTH], PPLAYER _pPlayer, SetGameState& stateManager)
 {
-    MovePlayer(_arrMap, _pPlayer);
+    KeyManager(_arrMap, _pPlayer, stateManager);
     Sleep(10);
 }
 
@@ -54,13 +74,14 @@ void FrameSync(unsigned int _Framerate)
     }
 }
 
-void Init(char _arrMap[MAP_HEIGHT][MAP_WIDTH], PPLAYER _pPlayer)
+void Init(char _arrMap[MAP_HEIGHT][MAP_WIDTH], char _infoarrMap[MAP_HEIGHT][IMAP_WIDTH], PPLAYER _pPlayer)
 {
     _pPlayer->playerPos.x = 1;
     _pPlayer->playerPos.y = 1;
     system("title 21Bombman | mode con cols=160 lines=40");
     SetCursorVis(false, 1);
 
+    //맵불러오기밍
     std::fstream readMap("Map\\stage.txt");
     if (readMap.is_open()) {
         for (int i = 0; i < MAP_HEIGHT; ++i) {
@@ -71,11 +92,22 @@ void Init(char _arrMap[MAP_HEIGHT][MAP_WIDTH], PPLAYER _pPlayer)
             }
         }
     }
+
+    std::fstream readMapInfo("Map\\info.txt");
+    if (readMapInfo.is_open()) {
+        for (int i = 0; i < MAP_HEIGHT; ++i) {
+            readMapInfo.getline(_infoarrMap[i], IMAP_WIDTH);
+            if (readMapInfo.fail())
+            {
+                std::cout << "파일 에러";
+            }
+        }
+    }
 }
 
 bool revealed[MAP_HEIGHT][MAP_WIDTH] = { false };
 
-void Render(char _arrMap[MAP_HEIGHT][MAP_WIDTH], PPLAYER _pPlayer, int SHADOW)
+void GameRender(char _arrMap[MAP_HEIGHT][MAP_WIDTH], PPLAYER _pPlayer, int SHADOW, SetGameState& stateManager)
 {
     // 불값으로 2차원 배열을 받아와 true인 경우에만 밝힐 수 있도록 사전작업
     for (int i = _pPlayer->playerPos.y - SHADOW; i <= _pPlayer->playerPos.y + SHADOW; ++i) {
@@ -95,8 +127,11 @@ void Render(char _arrMap[MAP_HEIGHT][MAP_WIDTH], PPLAYER _pPlayer, int SHADOW)
                 std::cout << "＆";
             }
             // 빈 공간은 시야와 상관없이 항상 출력
-            else if (_arrMap[i][j] == (char)OBJ_TYPE::EMPTY) {
+            else if (_arrMap[i][j] == (char)OBJ_TYPE::EMPTY && stateManager.State == GAMESTATE::PLAY) {
                 std::cout << "■";
+            }
+            else if (_arrMap[i][j] == (char)OBJ_TYPE::EMPTY && stateManager.State == GAMESTATE::INFO) {
+                std::cout << "  ";
             }
             // 시야에 비춰지고 있는 부분 출력
             else if (i >= _pPlayer->playerPos.y - SHADOW && i <= _pPlayer->playerPos.y + SHADOW &&
@@ -132,5 +167,25 @@ void Render(char _arrMap[MAP_HEIGHT][MAP_WIDTH], PPLAYER _pPlayer, int SHADOW)
         for (int i = 0; i < Map_Emtpy; ++i) {
             std::cout << " ";
         }
+    }
+}
+
+void InfoRender(char _infoarrMap[MAP_HEIGHT][IMAP_WIDTH], PPLAYER _pPlayer, int SHADOW, SetGameState& stateManager)
+{
+    for (int i = 0; i < MAP_HEIGHT; ++i) {
+        for (int j = 0; j < IMAP_WIDTH - 1; ++j) {
+            if (_infoarrMap[i][j] == (char)OBJ_TYPE::EMPTY && stateManager.State == GAMESTATE::PLAY) {
+            std::cout << "  ";
+            }
+            else if (_infoarrMap[i][j] == (char)OBJ_TYPE::EMPTY && stateManager.State == GAMESTATE::INFO) {
+                std::cout << "■";
+            }
+            else if (_infoarrMap[i][j] == (char)OBJ_TYPE::ROAD) {
+                std::cout << "  ";
+            }
+        }
+        std::cout << std::endl;
+        Gotoxy(Map_Emtpy + 100, 6 + i);
+        std::cout << " ";
     }
 }
