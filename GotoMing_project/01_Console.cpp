@@ -13,6 +13,22 @@ void LockResize()
 	}
 }
 
+void SetColor(int _textcolor, int _bgcolor)
+{
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE)
+		, (_bgcolor << 4) | _textcolor);
+}
+
+COORD GetConsoleResolution()
+{
+	CONSOLE_SCREEN_BUFFER_INFO info;
+	GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE)
+		, &info);
+	short width = info.srWindow.Right - info.srWindow.Left + 1;
+	short height = info.srWindow.Bottom - info.srWindow.Top + 1;
+	return COORD{ width, height };
+}
+
 void Gotoxy(int _x, int _y)
 {
 	// 콘솔창 핸들

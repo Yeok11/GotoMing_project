@@ -18,13 +18,13 @@
     <ClCompile Include="00_Main.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="02_GameLogic.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="01_Console.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="02_HGameLogic.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="03_Title.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
@@ -33,6 +33,9 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="01_HConsole.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="HTitle.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>

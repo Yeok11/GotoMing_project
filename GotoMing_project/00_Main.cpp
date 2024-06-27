@@ -2,6 +2,7 @@
 
 #include"02_HGameLogic.h"
 #include"01_HConsole.h"
+#include"HTitle.h"
 
 int main()
 {
@@ -13,6 +14,8 @@ int main()
 	SetINFOState stateInfoManager = {};
 
 	Init(arrMap, InfoarrMap, &tPlayer);
+	if (!TitleScene())
+		return 0;
 
 	while (true)
 	{

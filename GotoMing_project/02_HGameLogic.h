@@ -36,7 +36,7 @@ enum class OBJ_TYPE {
 };
 
 enum class GAMESTATE {
-	PLAY = '0', INFO,
+	PLAY = '0', INFO, TITLE
 };
 
 enum class INFOSTATE {

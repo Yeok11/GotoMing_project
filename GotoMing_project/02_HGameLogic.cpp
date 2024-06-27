@@ -1,5 +1,6 @@
 #include "02_HGameLogic.h"
 #include "01_HConsole.h"
+#include "HTitle.h"
 #include <algorithm>
 #include <iostream>
 #include <ctime>
@@ -11,6 +12,7 @@ bool wasInfoKeyPressed = false;
 
 int infoCursor = 11;
 
+int m();
 void KeyManager(char _arrMap[MAP_HEIGHT][MAP_WIDTH], PPLAYER _pPlayer, SetGameState& stateManager, SetINFOState& stateinfo) {
 
     _pPlayer->playerNewPos = _pPlayer->playerPos;
@@ -54,6 +56,7 @@ void KeyManager(char _arrMap[MAP_HEIGHT][MAP_WIDTH], PPLAYER _pPlayer, SetGameSt
     else {
         wasTabPressed = false; // TAB 키가 눌리지 않았음을 기록
     }
+
     if (stateManager.State == GAMESTATE::INFO) {
         if (!wasInfoKeyPressed) {
             if (GetAsyncKeyState(VK_DOWN) & 0x8000) {
@@ -64,7 +67,7 @@ void KeyManager(char _arrMap[MAP_HEIGHT][MAP_WIDTH], PPLAYER _pPlayer, SetGameSt
                 }
                 wasInfoKeyPressed = true;
             }
-            else if (GetAsyncKeyState(VK_UP) & 0x8000) {
+            if (GetAsyncKeyState(VK_UP) & 0x8000) {
                 if (infoCursor > 11) {
                     Gotoxy(Map_Emtpy + 117, infoCursor);
                     std::cout << "    ";
@@ -72,13 +75,31 @@ void KeyManager(char _arrMap[MAP_HEIGHT][MAP_WIDTH], PPLAYER _pPlayer, SetGameSt
                 }
                 wasInfoKeyPressed = true;
             }
+            if (GetAsyncKeyState(VK_SPACE) & 0x8000) {
+                if (infoCursor == 11) {
+                    //플레이어 정보코드 구현
+                }
+                else if (infoCursor == 19) {
+                    //도움말 구현
+                }
+                else if (infoCursor == 27) {
+                    system("cls");
+                    m();
+                }
+            }
         }
         else {
-            wasInfoKeyPressed = false;
+            // 키가 떼어질 때까지 대기
+            if (!(GetAsyncKeyState(VK_UP) & 0x8000) && !(GetAsyncKeyState(VK_DOWN) & 0x8000)) {
+                wasInfoKeyPressed = false;
+            }
         }
     }
 }
-
+int m() {
+    if (!TitleScene())
+        return 0;
+}
 void Update(char _arrMap[MAP_HEIGHT][MAP_WIDTH], PPLAYER _pPlayer, SetGameState& stateManager, SetINFOState& stateinfo)
 {
     KeyManager(_arrMap, _pPlayer, stateManager, stateinfo);
@@ -135,91 +156,95 @@ bool revealed[MAP_HEIGHT][MAP_WIDTH] = { false };
 
 void GameRender(char _arrMap[MAP_HEIGHT][MAP_WIDTH], PPLAYER _pPlayer, int SHADOW, SetGameState& stateManager)
 {
-    // 불값으로 2차원 배열을 받아와 true인 경우에만 밝힐 수 있도록 사전작업
-    for (int i = _pPlayer->playerPos.y - SHADOW; i <= _pPlayer->playerPos.y + SHADOW; ++i) {
-        for (int j = _pPlayer->playerPos.x - SHADOW; j <= _pPlayer->playerPos.x + SHADOW; ++j) {
-            if (i >= 0 && i < MAP_HEIGHT && j >= 0 && j < MAP_WIDTH) {
-                revealed[i][j] = true;
+    if (stateManager.State != GAMESTATE::TITLE) {
+        // 불값으로 2차원 배열을 받아와 true인 경우에만 밝힐 수 있도록 사전작업
+        for (int i = _pPlayer->playerPos.y - SHADOW; i <= _pPlayer->playerPos.y + SHADOW; ++i) {
+            for (int j = _pPlayer->playerPos.x - SHADOW; j <= _pPlayer->playerPos.x + SHADOW; ++j) {
+                if (i >= 0 && i < MAP_HEIGHT && j >= 0 && j < MAP_WIDTH) {
+                    revealed[i][j] = true;
+                }
             }
         }
-    }
 
-    // 맵을 출력합니다.
-    for (int i = 0; i < MAP_HEIGHT; ++i) {
-        for (int j = 0; j < MAP_WIDTH - 1; ++j) {
+        // 맵을 출력합니다.
+        for (int i = 0; i < MAP_HEIGHT; ++i) {
+            for (int j = 0; j < MAP_WIDTH - 1; ++j) {
 
-            // 플레이어 위치
-            if (i == _pPlayer->playerPos.y && j == _pPlayer->playerPos.x) {
-                std::cout << "＆";
-            }
-            // 빈 공간은 시야와 상관없이 항상 출력
-            else if (_arrMap[i][j] == (char)OBJ_TYPE::EMPTY && stateManager.State == GAMESTATE::PLAY) {
-                std::cout << "■";
-            }
-            else if (_arrMap[i][j] == (char)OBJ_TYPE::EMPTY && stateManager.State == GAMESTATE::INFO) {
-                std::cout << "  ";
-            }
-            // 시야에 비춰지고 있는 부분 출력
-            else if (i >= _pPlayer->playerPos.y - SHADOW && i <= _pPlayer->playerPos.y + SHADOW &&
-                j >= _pPlayer->playerPos.x - SHADOW && j <= _pPlayer->playerPos.x + SHADOW) {
-                if (_arrMap[i][j] == (char)OBJ_TYPE::ROAD) {
+                // 플레이어 위치
+                if (i == _pPlayer->playerPos.y && j == _pPlayer->playerPos.x) {
+                    std::cout << "＆";
+                }
+                // 빈 공간은 시야와 상관없이 항상 출력
+                else if (_arrMap[i][j] == (char)OBJ_TYPE::EMPTY && stateManager.State == GAMESTATE::PLAY) {
+                    std::cout << "■";
+                }
+                else if (_arrMap[i][j] == (char)OBJ_TYPE::EMPTY && stateManager.State == GAMESTATE::INFO) {
                     std::cout << "  ";
                 }
-                else if (_arrMap[i][j] == (char)OBJ_TYPE::OBSTACLE) {
-                    std::cout << "◆";
+                // 시야에 비춰지고 있는 부분 출력
+                else if (i >= _pPlayer->playerPos.y - SHADOW && i <= _pPlayer->playerPos.y + SHADOW &&
+                    j >= _pPlayer->playerPos.x - SHADOW && j <= _pPlayer->playerPos.x + SHADOW) {
+                    if (_arrMap[i][j] == (char)OBJ_TYPE::ROAD) {
+                        std::cout << "  ";
+                    }
+                    else if (_arrMap[i][j] == (char)OBJ_TYPE::OBSTACLE) {
+                        std::cout << "◆";
+                    }
+                    else if (_arrMap[i][j] == (char)OBJ_TYPE::ENEMY) {
+                        std::cout << "※";
+                    }
                 }
-                else if (_arrMap[i][j] == (char)OBJ_TYPE::ENEMY) {
-                    std::cout << "※";
+                // 시야에 비춰진 영역 출력
+                else if (revealed[i][j]) {
+                    if (_arrMap[i][j] == (char)OBJ_TYPE::ROAD) {
+                        std::cout << "  ";
+                    }
+                    else if (_arrMap[i][j] == (char)OBJ_TYPE::OBSTACLE) {
+                        std::cout << "◆";
+                    }
+                    else if (_arrMap[i][j] == (char)OBJ_TYPE::ENEMY) {
+                        std::cout << "※";
+                    }
+                }
+                // 맵의 다른 요소 출력 (아직 밝혀지지 않은 영역)
+                else {
+                    std::cout << "▒ ";
                 }
             }
-            // 시야에 비춰진 영역 출력
-            else if (revealed[i][j]) {
-                if (_arrMap[i][j] == (char)OBJ_TYPE::ROAD) {
-                    std::cout << "  ";
-                }
-                else if (_arrMap[i][j] == (char)OBJ_TYPE::OBSTACLE) {
-                    std::cout << "◆";
-                }
-                else if (_arrMap[i][j] == (char)OBJ_TYPE::ENEMY) {
-                    std::cout << "※";
-                }
+            std::cout << std::endl;
+            for (int i = 0; i < Map_Emtpy; ++i) {
+                std::cout << " ";
             }
-            // 맵의 다른 요소 출력 (아직 밝혀지지 않은 영역)
-            else {
-                std::cout << "▒ ";
-            }
-        }
-        std::cout << std::endl;
-        for (int i = 0; i < Map_Emtpy; ++i) {
-            std::cout << " ";
         }
     }
 }
 
 void InfoRender(char _infoarrMap[MAP_HEIGHT][IMAP_WIDTH], PPLAYER _pPlayer, int SHADOW, SetGameState& stateManager)
 {
-    for (int i = 0; i < MAP_HEIGHT; ++i) {
-        for (int j = 0; j < IMAP_WIDTH - 1; ++j) {
-            if (_infoarrMap[i][j] == (char)OBJ_TYPE::EMPTY && stateManager.State == GAMESTATE::PLAY) {
-            std::cout << "  ";
+    if (stateManager.State != GAMESTATE::TITLE) {
+        for (int i = 0; i < MAP_HEIGHT; ++i) {
+            for (int j = 0; j < IMAP_WIDTH - 1; ++j) {
+                if (_infoarrMap[i][j] == (char)OBJ_TYPE::EMPTY && stateManager.State == GAMESTATE::PLAY) {
+                    std::cout << "  ";
+                }
+                else if (_infoarrMap[i][j] == (char)OBJ_TYPE::EMPTY && stateManager.State == GAMESTATE::INFO) {
+                    std::cout << "■";
+                }
+                else if (_infoarrMap[i][j] == (char)OBJ_TYPE::ROAD) {
+                    Gotoxy(Map_Emtpy + 103 + j * 2, +5 + i);
+                }
             }
-            else if (_infoarrMap[i][j] == (char)OBJ_TYPE::EMPTY && stateManager.State == GAMESTATE::INFO) {
-                std::cout << "■";
-            }
-            else if (_infoarrMap[i][j] == (char)OBJ_TYPE::ROAD) {
-                Gotoxy(Map_Emtpy + 103 + j * 2, + 5 + i);
-            }
+            std::cout << std::endl;
+            Gotoxy(Map_Emtpy + 100, 6 + i);
+            std::cout << " ";
         }
-        std::cout << std::endl;
-        Gotoxy(Map_Emtpy + 100, 6 + i);
-        std::cout << " ";
+        Gotoxy(Map_Emtpy + 122, 11);
+        std::cout << "플레이어 정보";
+        Gotoxy(Map_Emtpy + 122, 19);
+        std::cout << "도움말";
+        Gotoxy(Map_Emtpy + 122, 27);
+        std::cout << "타이틀화면";
+        Gotoxy(Map_Emtpy + 117, infoCursor);
+        std::cout << ">>";
     }
-    Gotoxy(Map_Emtpy + 122, 11);
-    std::cout << "플레이어 정보";
-    Gotoxy(Map_Emtpy + 122, 19);
-    std::cout << "도움말";
-    Gotoxy(Map_Emtpy + 122, 27);
-    std::cout << "타이틀화면";
-    Gotoxy(Map_Emtpy + 117, infoCursor);
-    std::cout << ">>";
 }

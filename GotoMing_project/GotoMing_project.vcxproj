@@ -142,12 +142,13 @@
   <ItemGroup>
     <ClCompile Include="00_Main.cpp" />
     <ClCompile Include="01_Console.cpp" />
-    <ClCompile Include="02_GameLogic.cpp" />
     <ClCompile Include="02_HGameLogic.cpp" />
+    <ClCompile Include="03_Title.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="01_HConsole.h" />
     <ClInclude Include="02_HGameLogic.h" />
+    <ClInclude Include="HTitle.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
