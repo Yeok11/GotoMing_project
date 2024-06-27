@@ -7,8 +7,11 @@
 
 bool isInfo = false;
 bool wasTabPressed = false;
+bool wasInfoKeyPressed = false;
 
-void KeyManager(char _arrMap[MAP_HEIGHT][MAP_WIDTH], PPLAYER _pPlayer, SetGameState& stateManager) {
+int infoCursor = 11;
+
+void KeyManager(char _arrMap[MAP_HEIGHT][MAP_WIDTH], PPLAYER _pPlayer, SetGameState& stateManager, SetINFOState& stateinfo) {
 
     _pPlayer->playerNewPos = _pPlayer->playerPos;
     
@@ -51,11 +54,34 @@ void KeyManager(char _arrMap[MAP_HEIGHT][MAP_WIDTH], PPLAYER _pPlayer, SetGameSt
     else {
         wasTabPressed = false; // TAB 키가 눌리지 않았음을 기록
     }
+    if (stateManager.State == GAMESTATE::INFO) {
+        if (!wasInfoKeyPressed) {
+            if (GetAsyncKeyState(VK_DOWN) & 0x8000) {
+                if (infoCursor < 27) {
+                    Gotoxy(Map_Emtpy + 117, infoCursor);
+                    std::cout << "    ";
+                    infoCursor += 8;
+                }
+                wasInfoKeyPressed = true;
+            }
+            else if (GetAsyncKeyState(VK_UP) & 0x8000) {
+                if (infoCursor > 11) {
+                    Gotoxy(Map_Emtpy + 117, infoCursor);
+                    std::cout << "    ";
+                    infoCursor -= 8;
+                }
+                wasInfoKeyPressed = true;
+            }
+        }
+        else {
+            wasInfoKeyPressed = false;
+        }
+    }
 }
 
-void Update(char _arrMap[MAP_HEIGHT][MAP_WIDTH], PPLAYER _pPlayer, SetGameState& stateManager)
+void Update(char _arrMap[MAP_HEIGHT][MAP_WIDTH], PPLAYER _pPlayer, SetGameState& stateManager, SetINFOState& stateinfo)
 {
-    KeyManager(_arrMap, _pPlayer, stateManager);
+    KeyManager(_arrMap, _pPlayer, stateManager, stateinfo);
     Sleep(10);
 }
 
@@ -181,11 +207,19 @@ void InfoRender(char _infoarrMap[MAP_HEIGHT][IMAP_WIDTH], PPLAYER _pPlayer, int 
                 std::cout << "■";
             }
             else if (_infoarrMap[i][j] == (char)OBJ_TYPE::ROAD) {
-                std::cout << "  ";
+                Gotoxy(Map_Emtpy + 103 + j * 2, + 5 + i);
             }
         }
         std::cout << std::endl;
         Gotoxy(Map_Emtpy + 100, 6 + i);
         std::cout << " ";
     }
+    Gotoxy(Map_Emtpy + 122, 11);
+    std::cout << "플레이어 정보";
+    Gotoxy(Map_Emtpy + 122, 19);
+    std::cout << "도움말";
+    Gotoxy(Map_Emtpy + 122, 27);
+    std::cout << "타이틀화면";
+    Gotoxy(Map_Emtpy + 117, infoCursor);
+    std::cout << ">>";
 }

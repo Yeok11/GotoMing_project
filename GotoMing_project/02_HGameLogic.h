@@ -39,20 +39,35 @@ enum class GAMESTATE {
 	PLAY = '0', INFO,
 };
 
+enum class INFOSTATE {
+	PLAYERINFO = '0', HELP, TITLE
+};
+
 class SetGameState
 {
 public:
 	GAMESTATE State;
-	SetGameState() : State(GAMESTATE::PLAY){}
+	SetGameState() : State(GAMESTATE::PLAY) {}
 	void setState(GAMESTATE newState) {
 		State = newState;
 	}
 
 };
 
+class SetINFOState
+{
+public:
+	INFOSTATE State;
+	SetINFOState() : State(INFOSTATE::PLAYERINFO){}
+	void setState(INFOSTATE newState) {
+		State = newState;
+	}
+
+};
+
 //메서드 선언
-void KeyManager(char _arrMap[MAP_HEIGHT][MAP_WIDTH], PPLAYER _pPlayer, SetGameState& stateManager);
-void Update(char _arrMap[MAP_HEIGHT][MAP_WIDTH], PPLAYER _pPlayer, SetGameState& stateManager);
+void KeyManager(char _arrMap[MAP_HEIGHT][MAP_WIDTH], PPLAYER _pPlayer, SetGameState& stateManager, SetINFOState& stateinfo);
+void Update(char _arrMap[MAP_HEIGHT][MAP_WIDTH], PPLAYER _pPlayer, SetGameState& stateManager, SetINFOState& stateinfo);
 void FrameSync(unsigned int _Framerate);
 void Init(char _arrMap[MAP_HEIGHT][MAP_WIDTH], char _infoarrMap[MAP_HEIGHT][IMAP_WIDTH], PPLAYER _pPlayer);
 void GameRender(char _arrMap[MAP_HEIGHT][MAP_WIDTH], PPLAYER _pPlayer, int SHADOW, SetGameState& stateManager);

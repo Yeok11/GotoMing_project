@@ -10,12 +10,13 @@ int main()
 	char InfoarrMap[MAP_HEIGHT][IMAP_WIDTH];
 	PLAYER tPlayer = {};
 	SetGameState stateManager = {};
+	SetINFOState stateInfoManager = {};
 
 	Init(arrMap, InfoarrMap, &tPlayer);
 
 	while (true)
 	{
-		Update(arrMap, &tPlayer, stateManager);
+		Update(arrMap, &tPlayer, stateManager, stateInfoManager);
 		Gotoxy(Map_Emtpy, 5);
 		GameRender(arrMap, &tPlayer, SHADOW, stateManager);
 		Gotoxy(Map_Emtpy + 101, 5);
