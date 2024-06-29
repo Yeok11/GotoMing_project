@@ -65,10 +65,13 @@ public:
 
 };
 
+
 //메서드 선언
+void SetReset();
 void KeyManager(char _arrMap[MAP_HEIGHT][MAP_WIDTH], PPLAYER _pPlayer, SetGameState& stateManager, SetINFOState& stateinfo);
 void Update(char _arrMap[MAP_HEIGHT][MAP_WIDTH], PPLAYER _pPlayer, SetGameState& stateManager, SetINFOState& stateinfo);
 void FrameSync(unsigned int _Framerate);
 void Init(char _arrMap[MAP_HEIGHT][MAP_WIDTH], char _infoarrMap[MAP_HEIGHT][IMAP_WIDTH], PPLAYER _pPlayer);
 void GameRender(char _arrMap[MAP_HEIGHT][MAP_WIDTH], PPLAYER _pPlayer, int SHADOW, SetGameState& stateManager);
 void InfoRender(char _infoarrmap[MAP_HEIGHT][IMAP_WIDTH], PPLAYER _pPlayer, int SHADOW, SetGameState& stateManager);
+

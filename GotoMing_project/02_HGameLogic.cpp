@@ -5,6 +5,7 @@
 #include <iostream>
 #include <ctime>
 #include <fstream>
+#include <string>
 
 bool isInfo = false;
 bool wasTabPressed = false;
@@ -12,9 +13,13 @@ bool wasInfoKeyPressed = false;
 
 int infoCursor = 11;
 
-int m();
-void KeyManager(char _arrMap[MAP_HEIGHT][MAP_WIDTH], PPLAYER _pPlayer, SetGameState& stateManager, SetINFOState& stateinfo) {
+void SetReset()
+{
+    wasInfoKeyPressed = true;
+    infoCursor = 11;
+}
 
+void KeyManager(char _arrMap[MAP_HEIGHT][MAP_WIDTH], PPLAYER _pPlayer, SetGameState& stateManager, SetINFOState& stateinfo) {
     _pPlayer->playerNewPos = _pPlayer->playerPos;
     
     if (stateManager.State == GAMESTATE::PLAY) {
@@ -32,7 +37,7 @@ void KeyManager(char _arrMap[MAP_HEIGHT][MAP_WIDTH], PPLAYER _pPlayer, SetGameSt
             _pPlayer->playerPos = _pPlayer->playerNewPos;
         }
         else if (_arrMap[_pPlayer->playerNewPos.y][_pPlayer->playerNewPos.x] == (char)OBJ_TYPE::ENEMY) {
-            system("curl parrot.live");
+            //적하고 닿았을떄
         }
 
     }
@@ -84,21 +89,17 @@ void KeyManager(char _arrMap[MAP_HEIGHT][MAP_WIDTH], PPLAYER _pPlayer, SetGameSt
                 }
                 else if (infoCursor == 27) {
                     system("cls");
-                    m();
+                    TitleScene();
                 }
             }
         }
         else {
             // 키가 떼어질 때까지 대기
-            if (!(GetAsyncKeyState(VK_UP) & 0x8000) && !(GetAsyncKeyState(VK_DOWN) & 0x8000)) {
+            if (!(GetAsyncKeyState(VK_UP) & 0x8000) && !(GetAsyncKeyState(VK_DOWN) & 0x8000) && !(GetAsyncKeyState(VK_SPACE) & 0x8000)) {
                 wasInfoKeyPressed = false;
             }
         }
     }
-}
-int m() {
-    if (!TitleScene())
-        return 0;
 }
 void Update(char _arrMap[MAP_HEIGHT][MAP_WIDTH], PPLAYER _pPlayer, SetGameState& stateManager, SetINFOState& stateinfo)
 {
@@ -124,12 +125,14 @@ void FrameSync(unsigned int _Framerate)
 void Init(char _arrMap[MAP_HEIGHT][MAP_WIDTH], char _infoarrMap[MAP_HEIGHT][IMAP_WIDTH], PPLAYER _pPlayer)
 {
     _pPlayer->playerPos.x = 1;
-    _pPlayer->playerPos.y = 1;
+    _pPlayer->playerPos.y = 15;
     system("title 21Bombman | mode con cols=160 lines=40");
     SetCursorVis(false, 1);
 
     //맵불러오기밍
-    std::fstream readMap("Map\\stage.txt");
+    int stageNumber = 8;  // Default stage number
+    std::string fileName = "Map\\stage" + std::to_string(stageNumber) + ".txt";
+    std::fstream readMap(fileName);
     if (readMap.is_open()) {
         for (int i = 0; i < MAP_HEIGHT; ++i) {
             readMap.getline(_arrMap[i], MAP_WIDTH);

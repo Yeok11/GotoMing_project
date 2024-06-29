@@ -1,16 +1,12 @@
 #pragma once
 void TitleRender();
-bool TitleScene();
-void InfoRender();
+void TitleScene();
+//void InfoRender();
+void Chosse();
+bool Haaa();
 
 enum class MENU
 {
 	START, INFO, QUIT
 };
-MENU MenuRender();
-enum class KEY
-{
-	UP, DOWN, SPACE, FAIL
-};
-KEY KeyController();
 void EnterAnimation();

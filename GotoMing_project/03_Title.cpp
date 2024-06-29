@@ -3,124 +3,90 @@
 #include<io.h>
 #include "HTitle.h"
 #include "01_Hconsole.h"
+#include"02_HGameLogic.h"
+
+
+int y = 22;
+bool isStart = false;
+bool aa = false;
+
 void TitleRender()
 {
 	int prevmode = _setmode(_fileno(stdout), _O_U16TEXT);
-	wcout << L"██████╗  ██████╗ ███╗   ███╗██████╗ ███╗   ███╗ █████╗ ███╗   ██╗" << endl;
-	wcout << L"██╔══██╗██╔═══██╗████╗ ████║██╔══██╗████╗ ████║██╔══██╗████╗  ██║" << endl;
-	wcout << L"██████╔╝██║   ██║██╔████╔██║██████╔╝██╔████╔██║███████║██╔██╗ ██║" << endl;
-	wcout << L"██╔══██╗██║   ██║██║╚██╔╝██║██╔══██╗██║╚██╔╝██║██╔══██║██║╚██╗██║" << endl;
-	wcout << L"██████╔╝╚██████╔╝██║ ╚═╝ ██║██████╔╝██║ ╚═╝ ██║██║  ██║██║ ╚████║" << endl;
-	wcout << L"╚═════╝  ╚═════╝ ╚═╝     ╚═╝╚═════╝ ╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═══╝" << endl;
+	wcout << endl;
+	wcout << endl;
+	wcout << endl;
+	wcout << L"                                          ▄▄▄▄███▄▄▄▄    ▄█  ███▄▄▄▄      ▄██████▄     ▄████████  ▄██████▄  ███▄▄▄▄  " << endl;
+	wcout << L"                                        ▄██▀▀▀███▀▀▀██▄ ███  ███▀▀▀██▄   ███    ███   ███    ███ ███    ███ ███▀▀▀██▄" << endl;
+	wcout << L"                                        ███   ███   ███ ███▌ ███   ███   ███    █▀    ███    █▀  ███    ███ ███   ███" << endl;
+	wcout << L"                                        ███   ███   ███ ███▌ ███   ███  ▄███         ▄███▄▄▄     ███    ███ ███   ███" << endl;
+	wcout << L"                                        ███   ███   ███ ███▌ ███   ███ ▀▀███ ████▄  ▀▀███▀▀▀     ███    ███ ███   ███" << endl;
+	wcout << L"                                        ███   ███   ███ ███  ███   ███   ███    ███   ███    █▄  ███    ███ ███   ███" << endl;
+	wcout << L"                                        ███   ███   ███ ███  ███   ███   ███    ███   ███    ███ ███    ███ ███   ███" << endl;
+	wcout << L"                                         ▀█   ███   █▀  █▀    ▀█   █▀    ████████▀    ██████████  ▀██████▀   ▀█   █▀ " << endl;
 	int curmode = _setmode(_fileno(stdout), prevmode);
 }
 
-bool TitleScene()
+void TitleScene()
 {
-	while (true)
+	isStart = false;
+	aa = false;
+	while (isStart == false)
 	{
-		system("cls");
+		Gotoxy(0, 0);
 		TitleRender();
-		MENU eMenu = MenuRender();
-		switch (eMenu)
-		{
-		case MENU::START:
+		Chosse();
+	}
+}
+
+void Chosse()
+{
+	Gotoxy(62 + 10, 20);
+	std::cout << "게임시작";
+	Gotoxy(62 + 10, 22);
+	std::cout << "종료";
+
+	if (!aa && GetAsyncKeyState(VK_UP) && GetAsyncKeyState(VK_DOWN)) {
+		aa = true;
+	}
+	if (aa) {
+		if (GetAsyncKeyState(VK_UP) && y == 22) {
+			Gotoxy(62 + 4, 20);
+			std::cout << ">>";
+			Gotoxy(62 + 4, 22);
+			std::cout << "    ";
+			y = 20;
+		}
+
+		if (GetAsyncKeyState(VK_DOWN) && y == 20) {
+			Gotoxy(62 + 4, 22);
+			std::cout << ">>";
+			Gotoxy(62 + 4, 20);
+			std::cout << "    ";
+			y = 22;
+		}
+
+		if (GetAsyncKeyState(VK_SPACE) && y == 20) {
+			SetReset();
+			system("cls");
 			EnterAnimation();
-			// Intro 애니메이션.
-			return true;
-		case MENU::INFO:
-			InfoRender();
-			break;
-		case MENU::QUIT:
-			return false;
+			isStart = true;
+		}
+
+		if (GetAsyncKeyState(VK_SPACE) && y == 22) {
+			exit(0);
 		}
 	}
 }
 
-void InfoRender()
+bool Haaa()
 {
-	system("cls");
-	cout << "[조작법 ]" << endl;
-	Sleep(100);
-	// 만약, 그 전까지는 얘가 계속 출력
-	// 되어 있는 상태여야하는데, 
-	// 스페이스바가 눌렸으면. 나가져야돼.
-	while (true)
-	{
-		if (KeyController() == KEY::SPACE)
-			break;
+	if (isStart == true) {
+		return true;
 	}
-}
-
-MENU MenuRender()
-{
-	COORD Resolution = GetConsoleResolution();
-	int x = Resolution.X / 3;  // 2.5
-	int y = Resolution.Y / 2.5;// 3
-	int originy = y;
-	Gotoxy(x, y);
-	cout << "게임 시작";
-	Gotoxy(x, y + 1);
-	cout << "게임 정보";
-	Gotoxy(x, y + 2);
-	cout << "게임 종료";
-	while (true)
-	{
-		KEY eKey = KeyController();
-		switch (eKey)
-		{
-		case KEY::UP:
-			if (originy < y)
-			{
-				Gotoxy(x - 2, y);
-				cout << " ";
-				Gotoxy(x - 2, --y);
-				cout << ">";
-				Sleep(100);
-			}
-			break;
-		case KEY::DOWN:
-			if (originy + 2 > y)
-			{
-				Gotoxy(x - 2, y);
-				cout << " ";
-				Gotoxy(x - 2, ++y);
-				cout << ">";
-				Sleep(100);
-			}
-			break;
-		case KEY::SPACE:
-		{
-			if (y == originy)
-				return MENU::START;
-			else if (y == originy + 1)
-				return MENU::INFO;
-			else if (y == originy + 1)
-				return MENU::QUIT;
-		}
-		break;
-		}
+	if (isStart == false) {
+		return false;
 	}
-}
-
-KEY KeyController()
-{
-	// 입력처리?
-	//if(getch()) // 1
-	if (GetAsyncKeyState(VK_UP) & 0x8000) // 2
-	{
-		return KEY::UP;
-	}
-	if (GetAsyncKeyState(VK_DOWN) & 0x8000) // 2
-	{
-		return KEY::DOWN;
-	}
-	if (GetAsyncKeyState(VK_SPACE) & 0x8000) // 2
-	{
-		Sleep(50);
-		return KEY::SPACE;
-	}
-	return KEY::FAIL;
 }
 
 void EnterAnimation()
@@ -128,7 +94,7 @@ void EnterAnimation()
 	COORD Resolution = GetConsoleResolution();
 	int width = Resolution.X;
 	int height = Resolution.Y;
-	int anitime = 20;
+	int anitime = 7;
 	system("cls");
 
 	for (int i = 0; i < 5; ++i)

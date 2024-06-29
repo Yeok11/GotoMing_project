@@ -14,17 +14,18 @@ int main()
 	SetINFOState stateInfoManager = {};
 
 	Init(arrMap, InfoarrMap, &tPlayer);
-	if (!TitleScene())
-		return 0;
+	TitleScene();
 
-	while (true)
-	{
-		Update(arrMap, &tPlayer, stateManager, stateInfoManager);
-		Gotoxy(Map_Emtpy, 5);
-		GameRender(arrMap, &tPlayer, SHADOW, stateManager);
-		Gotoxy(Map_Emtpy + 101, 5);
-		InfoRender(InfoarrMap, &tPlayer, SHADOW, stateManager);
-		FrameSync(60);
-		//d
+	if (Haaa()) {
+		while (true)
+		{
+			Update(arrMap, &tPlayer, stateManager, stateInfoManager);
+			Gotoxy(Map_Emtpy, 5);
+			GameRender(arrMap, &tPlayer, SHADOW, stateManager);
+			Gotoxy(Map_Emtpy + 101, 5);
+			InfoRender(InfoarrMap, &tPlayer, SHADOW, stateManager);
+			FrameSync(60);
+			//d
+		}
 	}
 }
