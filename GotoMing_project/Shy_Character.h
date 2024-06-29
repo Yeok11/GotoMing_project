@@ -1,30 +1,70 @@
 #pragma once
-#include "Shy_Define.h"
-
-enum class CHARACTERTYPE 
-{
-	NULLTYPE,
-	PLAYER,
-	ENEMY,
-};
+#include "SkillsList.h"
 
 class Character
 {
+protected:
+	int startHp = 0;
+	int speed = 0; //ÀÏ´Ü ³öµÖ
+	
+	CHARACTER_STATE state = CHARACTER_STATE::WAIT;
+
 public:
-	Character();
-	~Character();
-
-private:
 	int hp = 0;
-	int speed = 0;
-	vector<Skill> skills;
 
-	CHARACTERTYPE type = CHARACTERTYPE::NULLTYPE;
+	vector<Skill> skills = vector<Skill>();
+	vector<Skill> actionSkills = vector<Skill>();
+
+	inline CHARACTER_STATE CheckState() { return state; }
+	void ChangeState(CHARACTER_STATE _state)
+	{
+		state = _state;
+	}
+
+	void UseSkill(Character & _target);
+	void Hit(Character& _target, Skill skill);
+	void Prevent();
+
+
+	string ShowHp()
+	{
+		return std::to_string(hp) + " / " + std::to_string(startHp);
+	}
 };
 
 class Player : public Character
 {
-	Player();
+public:
+	Player() = default;
+	Player(int _hp, CHARACTER_STATE _state);
+	~Player();
 
-
+	void SetSkill(Skill * _skill, int _num = 1);
+	
+	int skillLimit = 3;
 };
+
+enum class ENEMYTYPE
+{
+	NONE,
+	BAT,
+	SPIDER,
+	SNAKE,
+	SCULTURE
+};
+
+class Enemy : public Character
+{
+public:
+	ENEMYTYPE type = ENEMYTYPE::NONE;
+
+	Enemy() = default;
+	Enemy(int _hp, CHARACTER_STATE _state);
+	~Enemy();
+
+	void SetSkill(Skill _skill);
+	void SetData();
+	void SetNextAction();
+};
+
+

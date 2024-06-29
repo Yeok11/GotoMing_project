@@ -1,4 +1,7 @@
 #pragma once
 #include "Shy_Define.h"
-void BoardRender(Board& _board);
+#include "Shy_Include.h"
 
+void BoardRender(Board& _board);
+void TileSelectRender(Pos pos, bool _delete = false);
+void EnemyRender();

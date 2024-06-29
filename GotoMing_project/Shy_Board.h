@@ -1,11 +1,13 @@
 #pragma once
-#include "Shy_Define.h"
+#include "Shy_Character.h"
 
 class Pos
 {
 public:
 	int x;
 	int y;
+
+	Pos() { x = 0; y = 0; }
 
 	Pos(int _x, int _y)
 	{
@@ -17,21 +19,19 @@ public:
 class BoardTile
 {
 public:
-	int rank; //카드의 등급
 	int data; //카드의 내용
 	Pos pos = Pos(0,0);
+	Skill skillData;
 
 	BoardTile(int _data)
 	{
 		data = _data;
-		rank = 0;
 	}
 };
 
 class Board 
 {
 public:
-	int size = 0;
 	int hSize = 0;
 	int wSize = 0;
 	int limitRank = 0;
@@ -39,13 +39,24 @@ public:
 	vector<BoardTile> board[99];
 
 	Board(int _size = 0);
+	Board(int hSize, int _wSize);
 	void SetBoard();
 	void AddTileInBoard(int _pos);
-	bool AllTileFilledNot();
-	bool FindEmptyTile(int _pos);
-	void CheckBoard();
+	void CheckBoard(bool fall = false);
 	void MergeTile(Pos _pos, Pos _addPos);
 	bool DownTile(Pos _pos);
+
+	void RemoveTile(Pos _pos)
+	{
+		board[_pos.x][4 - _pos.y].data = 0;
+		board[_pos.x][4 - _pos.y].skillData.rank = 0;
+	}
+
+	void InputSkill(Pos _pos, Player & _player)
+	{
+		_player.actionSkills.push_back(board[_pos.x][4 - _pos.y].skillData);
+		RemoveTile(_pos);
+	}
 
 private:
 	

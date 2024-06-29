@@ -33,6 +33,18 @@
     <ClCompile Include="Shy_Character.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="Shy_Player.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Shy_BM.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="SkillsList.h">
+      <Filter>헤더 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Shy_Skill.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Shy_Board.h">
@@ -54,6 +66,12 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="Shy_Character.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Shy_Include.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Shy_BM.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
