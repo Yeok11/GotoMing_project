@@ -23,6 +23,6 @@ public:
 
 	virtual void SetValue()
 	{
-
+		value = 5 + (rank / 2) * 1.22f;
 	}
 };

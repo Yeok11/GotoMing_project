@@ -31,55 +31,30 @@ Enemy::~Enemy()
 {
 }
 
-void Enemy::SetSkill(Skill _skill)
+void Enemy::SetSkill(Skill * _skill)
 {
-	_skill.SetValue();
-	skills.push_back(_skill);
+	_skill->InitSkill();
+	_skill->rank = rand() % 2 + 1;
+	_skill->SetValue();
+	skills.push_back(*_skill);
 }
 
 void Enemy::SetData()
 {
 	if (type == ENEMYTYPE::NONE)
 	{
-		Skill skillData;
-		switch (rand() % 3)
-		{
-		case 0:
-		{
-			type = ENEMYTYPE::BAT;
+		Skill * skillData;
+		type = ENEMYTYPE::BAT;
 
-			skillData = Bite();
-			SetSkill(skillData);
-			skillData = Wave();
-			SetSkill(skillData);
-			skillData = Sleeping();
-			SetSkill(skillData);
-			break;
-		}
-
-		case 1:
-			type = ENEMYTYPE::SNAKE;
-
-			skillData = Bite();
-			SetSkill(skillData);
-			skillData = Wave();
-			SetSkill(skillData);
-			skillData = Sleeping();
-			SetSkill(skillData);
-			break;
-
-		case 2:
-			type = ENEMYTYPE::SPIDER;
-
-			type = ENEMYTYPE::BAT;
-			skillData = Bite();
-			SetSkill(skillData);
-			skillData = Wave();
-			SetSkill(skillData);
-			skillData = Sleeping();
-			SetSkill(skillData);
-			break;
-		}
+		skillData = new Bite();
+		SetSkill(skillData);
+		delete skillData;
+		skillData = new Wave();
+		SetSkill(skillData);
+		delete skillData;
+		skillData = new BodyAttack();
+		SetSkill(skillData);
+		delete skillData;
 	}
 
 	
@@ -88,38 +63,27 @@ void Enemy::SetData()
 
 void Enemy::SetNextAction()
 {
-	Skill skill;
-	skill = skills[rand() % skills.size()];
-	actionSkills.push_back(skill);
+	Skill * skill;
+	skill = &skills[rand() % skills.size()];
+	actionSkills.push_back(*skill);
 }
 
-void HitEnemy()
-{
-
-}
 
 void Character::UseSkill(Character & _target)
 {
 	switch (actionSkills[0].type)
 	{
 	case SkILLTYPE::ATTACK:
-		Hit(_target, actionSkills[0]);
+		Hit(_target, &actionSkills[0]);
 		break;
 	}
 }
 
-void Character::Hit(Character& _target, Skill skill)
+void Character::Hit(Character& _target, Skill * skill)
 {
-	skill.SetValue();
-	int value = skill.value;
-	if (skill.type == SkILLTYPE::ATTACK)
-	{
-		value *= -1;
-	}
+	skill->SetValue();
+
+	Sleep(200);
+	int value = -skill->value;
 	_target.hp += value;
 }
-
-void Character::Prevent()
-{
-}
-

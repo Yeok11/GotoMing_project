@@ -1,4 +1,5 @@
 #pragma once
+#include <Windows.h>
 void Gotoxy(int _x, int _y);
 void SetColor(int _textcolor, int _bgcolor = 0);
 void SetScreen();

@@ -3,7 +3,7 @@
 
 int main()
 {
-	if (GM::GetInstance()->Init())
+	if (GM::GetInstance()->shyInit())
 	{
 		GM::DestroyInst();
 		return 0;

@@ -1,6 +1,7 @@
 #pragma once
 #include "Shy_Define.h"
 #include "Shy_BM.h"
+#include "02_HGameLogic.h"
 
 
 enum class GAME_STATE
@@ -19,8 +20,11 @@ private:
 	GM() = default;
 	static GM* instance;
 
-	void Update();
+	void ShyUpdate();
 	void Render(Board& _gameBoard);
+	void playerInit();
+	void ShowHelp();
+	void ShowData();
 	
 
 public:
@@ -28,18 +32,28 @@ public:
 	Player player;
 	Pos curPos;
 	Pos lastCurPos;
-	
-	bool Init();
+
+	char arrMap[MAP_HEIGHT][MAP_WIDTH] = {};
+	char interfaceMap[MAP_HEIGHT][IMAP_WIDTH] = {};
+
+	bool nextStage = true;
+	bool nowAnimation = false;
+
+	bool shyInit();
 	void Run();
 	bool curPosKeySet();
-
 	void ActionChange();
 	void EnemyAction();
+	
 	void PlayerAction();
+
+	void InitMap();
 
 	inline int InputKey()
 	{
-		int keyValue = _getch();
+		int keyValue = 0;
+		if (!nowAnimation)
+			keyValue = _getch();
 
 		return keyValue;
 	}
@@ -51,15 +65,19 @@ public:
 		switch (_gameState)
 		{
 		case GAME_STATE::TITLE:
+			nextStage = true;
 			return;
 		case GAME_STATE::BATTLE:
-			bInit();
+			system("cls");
+			system("pause");
+			bInit(player);
 			return;
 		case GAME_STATE::MOVE:
-			return;
-		case GAME_STATE::PLAYERDATA:
-			return;
-		case GAME_STATE::OPTION:
+			if (nextStage)
+			{
+				nextStage = false;
+				MapLoad(&player.pos);
+			}
 			return;
 		}
 	}

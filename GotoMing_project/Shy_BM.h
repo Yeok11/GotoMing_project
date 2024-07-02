@@ -13,5 +13,5 @@ public:
 
 	Board lastBoard;
 
-	void bInit();
+	void bInit(Player & p);
 };

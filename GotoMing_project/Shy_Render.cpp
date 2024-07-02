@@ -27,6 +27,14 @@ void ChangeColorByRank(int _rank)
 		SetColor((int)COLOR::BLACK, (int)COLOR::LIGHT_YELLOW);
 		break;
 
+	case 5:
+		SetColor((int)COLOR::BLACK, (int)COLOR::GREEN);
+		break;
+
+	case 6:
+		SetColor((int)COLOR::BLACK, (int)COLOR::SKYBLUE);
+		break;
+
 	default:
 		SetColor((int)COLOR::BLACK, (int)COLOR::LIGHT_RED);
 	}
@@ -120,6 +128,7 @@ void BoardRender(Board & _board)
 
 	if (GET_SINGLE(GM)->player.CheckState() == CHARACTER_STATE::SELECT)
 	{
+		GET_SINGLE(GM)->nowAnimation = false;
 		TileSelectRender(GET_SINGLE(GM)->lastCurPos, true);
 		TileSelectRender(GET_SINGLE(GM)->curPos);
 		GET_SINGLE(GM)->initTile = false;
@@ -154,13 +163,23 @@ void BatRender()
 	cout << "                              `` ``								" << endl;
 
 	Gotoxy(145, 22);
+	cout << "                          ";
+	Gotoxy(145, 22);
 	cout << "체력 : " + enemy.ShowHp();
 	Gotoxy(145, 23);
-	cout << "다음 행동 : 공격";
+	cout << "                              ";
+	Gotoxy(145, 23);
+	cout << "다음 행동 : " << enemy.actionSkills[0].name;
 }
 
 void EnemyRender()
 {
 	SetColor((int)COLOR::WHITE);
 	BatRender();
+}
+
+void PlayerHpRender(Player player)
+{
+	Gotoxy(145, 40);
+	cout << "내 체력 : " + player.ShowHp();
 }

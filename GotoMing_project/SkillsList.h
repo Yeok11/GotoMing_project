@@ -16,6 +16,26 @@ public:
 	}
 };
 
+class ThrowSand : public Skill
+{
+public:
+	virtual void InitSkill() override
+	{
+		name = "모래뿌리기";
+		type = SkILLTYPE::ATTACK;
+	}
+};
+
+class Head : public Skill
+{
+public:
+	virtual void InitSkill() override
+	{
+		name = "박치기";
+		type = SkILLTYPE::ATTACK;
+	}
+};
+
 class FireBall : public Skill
 {
 public:
@@ -23,11 +43,6 @@ public:
 	{
 		name = "파이어볼";
 		type = SkILLTYPE::ATTACK;	
-	}
-
-	void SetValue() override	
-	{
-		value = 3 * (rank * 2.17f);
 	}
 };
 
@@ -39,11 +54,6 @@ public:
 		name = "몸통박치기";
 		type = SkILLTYPE::ATTACK;
 	}
-
-	void SetValue() override
-	{
-		value = 5 + (rank * 1.45f);
-	}
 };
 
 class Punch : public Skill
@@ -52,11 +62,6 @@ class Punch : public Skill
 	{
 		name = "막치기";
 		type = SkILLTYPE::ATTACK;
-	}
-
-	void SetValue() override
-	{
-		value = 5 + (rank * 1.45f);
 	}
 };
 
@@ -67,11 +72,6 @@ public:
 	{
 		name = "막기";
 		type = SkILLTYPE::SHIELD;
-	}
-
-	void SetValue() override
-	{
-		value = 5 + (rank * 1.45f);
 	}
 };
 
@@ -84,11 +84,6 @@ public:
 		value = 5 + (rank * 1.45f);
 		type = SkILLTYPE::HEAL;
 	}
-
-	void SetValue() override
-	{
-		value = 3 * (rank * 2.17f);
-	}
 };
 
 class Bite : public Skill
@@ -96,13 +91,7 @@ class Bite : public Skill
 	void InitSkill() override
 	{
 		name = "물기";
-		value = 5 + (rank * 1.45f);
 		type = SkILLTYPE::ATTACK;
-	}
-
-	void SetValue() override
-	{
-		value = 3 * (rank * 2.17f);
 	}
 };
 
@@ -113,11 +102,6 @@ class Wave : public Skill
 		name = "초음파";
 		value = 2;
 		type = SkILLTYPE::ATTACK;
-	}
-
-	void SetValue() override
-	{
-		value = 3 * (rank * 2.17f);
 	}
 };
 
@@ -130,10 +114,6 @@ class Sleeping : public Skill
 		type = SkILLTYPE::ATTACK;
 	}
 
-	void SetValue() override
-	{
-		value = 3 * (rank * 2.17f);
-	}
 };
 
 
@@ -144,11 +124,6 @@ class Fear : public Skill
 		name = "공포";
 		value = 0;
 		type = SkILLTYPE::ATTACK;
-	}
-
-	void SetValue() override
-	{
-		value = 3 * (rank * 2.17f);
 	}
 };
 
@@ -161,10 +136,6 @@ public:
 		type = SkILLTYPE::ATTACK;
 	}
 
-	void SetValue() override
-	{
-		value = 3 * (rank * 2.17f);
-	}
 };
 
 class Idiot : public Skill
@@ -173,11 +144,6 @@ class Idiot : public Skill
 	{
 		name = "멍때리기";
 		type = SkILLTYPE::ATTACK;
-	}
-
-	void SetValue() override
-	{
-		value = 3 * (rank * 2.17f);
 	}
 };
 

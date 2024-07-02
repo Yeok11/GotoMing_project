@@ -1,11 +1,11 @@
 #pragma once
 #include "SkillsList.h"
+#include "02_HGameLogic.h"
 
 class Character
 {
 protected:
 	int startHp = 0;
-	int speed = 0; //ÀÏ´Ü ³öµÖ
 	
 	CHARACTER_STATE state = CHARACTER_STATE::WAIT;
 
@@ -22,9 +22,7 @@ public:
 	}
 
 	void UseSkill(Character & _target);
-	void Hit(Character& _target, Skill skill);
-	void Prevent();
-
+	void Hit(Character& _target, Skill * skill);
 
 	string ShowHp()
 	{
@@ -35,6 +33,7 @@ public:
 class Player : public Character
 {
 public:
+	_targetplayer pos = {};
 	Player() = default;
 	Player(int _hp, CHARACTER_STATE _state);
 	~Player();
@@ -62,7 +61,7 @@ public:
 	Enemy(int _hp, CHARACTER_STATE _state);
 	~Enemy();
 
-	void SetSkill(Skill _skill);
+	void SetSkill(Skill * _skill);
 	void SetData();
 	void SetNextAction();
 };

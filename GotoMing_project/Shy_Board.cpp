@@ -27,7 +27,6 @@ void Board::SetBoard()
 void Board::AddTileInBoard(int _pos)
 {
 	//너가 가지고 있는 카드의 수
-	int num = 5;
 	int _data = rand() % GET_SINGLE(GM)->player.skills.size() + 1;
 
 	board[_pos][hSize - 1].data = _data;

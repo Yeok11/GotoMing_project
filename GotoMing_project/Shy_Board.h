@@ -34,7 +34,6 @@ class Board
 public:
 	int hSize = 0;
 	int wSize = 0;
-	int limitRank = 0;
 
 	vector<BoardTile> board[99];
 
@@ -54,7 +53,9 @@ public:
 
 	void InputSkill(Pos _pos, Player & _player)
 	{
-		_player.actionSkills.push_back(board[_pos.x][4 - _pos.y].skillData);
+		Skill skillData = board[_pos.x][4 - _pos.y].skillData;
+		skillData.SetValue();
+		_player.actionSkills.push_back(skillData);
 		RemoveTile(_pos);
 	}
 

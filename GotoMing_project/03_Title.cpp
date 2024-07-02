@@ -1,10 +1,9 @@
-﻿#include<iostream>
-#include<fcntl.h>
+﻿#include<fcntl.h>
 #include<io.h>
-#include "HTitle.h"
-#include "01_Hconsole.h"
+#include "Shy_Console.h"
+#include "Shy_Core.h"
 #include"02_HGameLogic.h"
-
+#include "HTitle.h"
 
 int y = 22;
 bool isStart = false;
@@ -12,6 +11,7 @@ bool aa = false;
 
 void TitleRender()
 {
+	Gotoxy(0, 0);
 	int prevmode = _setmode(_fileno(stdout), _O_U16TEXT);
 	wcout << endl;
 	wcout << endl;
@@ -29,14 +29,7 @@ void TitleRender()
 
 void TitleScene()
 {
-	isStart = false;
-	aa = false;
-	while (isStart == false)
-	{
-		Gotoxy(0, 0);
-		TitleRender();
-		Chosse();
-	}
+	Chosse();
 }
 
 void Chosse()
@@ -70,7 +63,6 @@ void Chosse()
 			SetReset();
 			system("cls");
 			EnterAnimation();
-			isStart = true;
 		}
 
 		if (GetAsyncKeyState(VK_SPACE) && y == 22) {
@@ -79,15 +71,17 @@ void Chosse()
 	}
 }
 
-bool Haaa()
+
+COORD GetConsoleResolution()
 {
-	if (isStart == true) {
-		return true;
-	}
-	if (isStart == false) {
-		return false;
-	}
+	CONSOLE_SCREEN_BUFFER_INFO info;
+	GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE)
+		, &info);
+	short width = info.srWindow.Right - info.srWindow.Left + 1;
+	short height = info.srWindow.Bottom - info.srWindow.Top + 1;
+	return COORD{ width, height };
 }
+
 
 void EnterAnimation()
 {
@@ -126,4 +120,6 @@ void EnterAnimation()
 	}
 	SetColor((int)COLOR::WHITE);
 	system("cls");
+
+	GET_SINGLE(GM)->ChangeGameState(GAME_STATE::MOVE);
 }

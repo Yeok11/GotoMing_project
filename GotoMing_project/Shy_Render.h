@@ -5,3 +5,4 @@
 void BoardRender(Board& _board);
 void TileSelectRender(Pos pos, bool _delete = false);
 void EnemyRender();
+void PlayerHpRender(Player player);
