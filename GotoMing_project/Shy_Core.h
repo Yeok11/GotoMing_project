@@ -68,8 +68,8 @@ public:
 			nextStage = true;
 			return;
 		case GAME_STATE::BATTLE:
-			system("cls");
 			system("pause");
+			system("cls");
 			bInit(player);
 			return;
 		case GAME_STATE::MOVE:

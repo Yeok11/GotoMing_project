@@ -35,6 +35,7 @@ void KeyManager(char _arrMap[MAP_HEIGHT][MAP_WIDTH], PPLAYER _pPlayer)
             --_pPlayer->playerNewPos.x;
         if (GetAsyncKeyState(VK_RIGHT) & 0x8000)
             ++_pPlayer->playerNewPos.x;
+        cout << _pPlayer->playerNewPos.x << " / " << _pPlayer->playerNewPos.y;
 
         if (_arrMap[_pPlayer->playerNewPos.y][_pPlayer->playerNewPos.x] == (char)OBJ_TYPE::ROAD) {
             _pPlayer->playerPos = _pPlayer->playerNewPos;
@@ -132,7 +133,7 @@ void FrameSync(unsigned int _Framerate)
 
 void MapLoad(PPLAYER _pPlayer)
 {
-    _pPlayer->playerPos.x = 1;
+    _pPlayer->playerPos.x = 2;
     _pPlayer->playerPos.y = 15;
  
     //맵불러오기밍
@@ -185,15 +186,18 @@ void MoveRender(char _arrMap[MAP_HEIGHT][MAP_WIDTH], PPLAYER _pPlayer, int SHADO
                     std::cout << "＆";
                 }
                 // 빈 공간은 시야와 상관없이 항상 출력
-                else if (_arrMap[i][j] == (char)OBJ_TYPE::EMPTY) {
+                else if (_arrMap[i][j] == (char)OBJ_TYPE::EMPTY) 
+                {
                     std::cout << "■";
                 }
-                else if (_arrMap[i][j] == (char)OBJ_TYPE::EMPTY) {
-                    std::cout << "  ";
+                else if (_arrMap[i][j] == (char)OBJ_TYPE::EMPTY)
+                {
+                    std::cout << " ";
                 }
                 // 시야에 비춰지고 있는 부분 출력
-                else if (i >= _pPlayer->playerPos.y - SHADOW && i <= _pPlayer->playerPos.y + SHADOW &&
-                    j >= _pPlayer->playerPos.x - SHADOW && j <= _pPlayer->playerPos.x + SHADOW) {
+                else if (i >= _pPlayer->playerPos.y - SHADOW && i <= _pPlayer->playerPos.y + SHADOW && 
+                    j >= _pPlayer->playerPos.x - SHADOW && j <= _pPlayer->playerPos.x + SHADOW) 
+                {
                     if (_arrMap[i][j] == (char)OBJ_TYPE::ROAD) {
                         std::cout << "  ";
                     }

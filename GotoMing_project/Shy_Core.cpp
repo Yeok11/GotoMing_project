@@ -15,7 +15,7 @@ bool GM::shyInit()
 	SetScreen();
 	curPos = Pos(0, 0);
 	
-	ChangeGameState(GAME_STATE::TITLE);
+	ChangeGameState(GAME_STATE::BATTLE);
 
 	return false;
 }
@@ -149,7 +149,7 @@ void GM::Render(Board& _gameBoard)
 			cout << "적을 처치했습니다." << endl << endl;
 			system("pause");
 			system("cls");
-			ChangeGameState(GAME_STATE::MOVE);
+			ChangeGameState(GAME_STATE::TITLE);
 		}
 		else if (player.hp <= 0)
 		{
